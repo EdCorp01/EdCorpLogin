@@ -6,7 +6,7 @@ include("login.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['signup_submit'])) {
-        // Sign-up logic
+       
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['pass']) ? $_POST['pass'] : '';
         $Paid = isset($_POST['Paid']) ? $_POST['Paid'] : '';
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             // Hash the password before storing it in the database
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Perform database insertion for sign-up
+            
             $query = "INSERT INTO signuplist.studentsignup (Email, Password, Paid, DateS) VALUES ('$email', '$hashed_password', '$Paid', '$Date')";
             mysqli_query($con, $query);
 
@@ -25,17 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo "Registration unsuccessful, please enter only valid details";
         }
     } elseif (isset($_POST['login_submit'])) {
-        // Login logic
+       
         $emailog = $_POST['emaillog'];
         $passwordlog = isset($_POST['passlog']) ? $_POST['passlog'] : ''; // Add this line to capture the password
         $IP = $_SERVER['REMOTE_ADDR'];
         
         if (!empty($emailog) && !empty($passwordlog) && !is_numeric($emailog)) {
-            // Store login record
+           
             $query = "INSERT INTO logincheck.loginrecords (email, IP) VALUES ('$emailog', '$IP')";
             mysqli_query($con, $query);
         
-            // Perform database query for login
+            
             $query = "SELECT * FROM signuplist.studentsignup WHERE Email = '$emailog' LIMIT 1";
         
             $result = mysqli_query($con, $query);
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if ($result && mysqli_num_rows($result) > 0) {
                 $user_data = mysqli_fetch_assoc($result);
         
-                // Use password_verify to check the entered password against the hashed password
+              
                 if (password_verify($passwordlog, $user_data['Password']) && $user_data['Paid'] == "Yes") {
                     header("Location: https://edcorponlineco.wordpress.com/");
                     exit();
